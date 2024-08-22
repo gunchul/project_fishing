@@ -20,7 +20,7 @@ class Tide:
     def export(self, db, region):
         for row in self.rows:
             for tuple in self.rows[row]:
-                tide_datetime = f"{row} {tuple["time"]}"
+                tide_datetime = f'{row} {tuple["time"]}'
                 tide_datetime_obj = datetime.strptime(tide_datetime, '%Y-%m-%d %I:%M %p')
                 sql = """
 INSERT INTO tide(date, region, expect_date, time, height) VALUES (%s, %s, %s, %s, %s);
