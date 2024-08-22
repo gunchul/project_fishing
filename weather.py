@@ -22,7 +22,7 @@ TYPES = {
 }
 
 REGIONS = {
-    "wolongong":"illawarra/coal-cliff-harbour",
+    "wollongong":"illawarra/coal-cliff-harbour",
     "sydney":"sydney/south-head",
     "central coast":"central-coast/lighthouse-beach",
     "newcastle":"hunter/bar-beach",
