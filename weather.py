@@ -36,14 +36,19 @@ def html_get(type, region):
     response = requests.get(url)
     return response.content.decode("utf-8")
 
-def export(db):
+def export():
+    auth = Auth()
+    db = Db(auth.database_host(), auth.database_user(), auth.database_password(), "fishing")
     for region in REGIONS:
         for type in TYPES:
             html = html_get(TYPES[type]["pre-uri"], REGIONS[region])
             object = TYPES[type]["creator"](html)
             object.export(db, region)
 
+def swell_sample_html():
+    html = html_get(TYPES['swell']["pre-uri"], REGIONS['sydney'])
+    print(html)
+
 if __name__ == "__main__":
-    auth = Auth()
-    db = Db(auth.database_host(), auth.database_user(), auth.database_password(), "fishing")
-    export(db)
+    export()
+    # swell_sample_html()

@@ -16,9 +16,15 @@ class Swell:
 
     def _data_load(self, html):
         soup = BeautifulSoup(html, "html.parser")
-        script = soup.find("script", string=lambda s: "ww.data.graphs" in s).string.split(";")[0]
-        value_of_graphs = script.split('ww.data.graphs = ')[1]
-        value_of_data = value_of_graphs.split('data:')[1].strip()[:-3]
+        try:
+            script = soup.find("script", string=lambda s: "ww.data.graphs" in s).string.split(";")[0]
+            value_of_graphs = script.split('ww.data.graphs = ')[1]
+            value_of_data = value_of_graphs.split('data:')[1].strip()[:-3]
+        except Exception as e:
+            with open("log/error_swell.html", "w") as f:
+                f.write(html)
+                raise e
+
         return json.loads(value_of_data)
 
     def _swell_height_add(self, x, height, direction):
