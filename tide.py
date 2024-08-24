@@ -8,14 +8,19 @@ class Tide:
 
     def _data_get(self, html):
         soup = BeautifulSoup(html, 'html.parser')
-        soup = soup.select("body > section > section.content > main > article > section > div > ul")[0]
-        for li in soup.find_all('li', recursive=False):
-            datetime = li.find('time').get('datetime')
-            self.rows[datetime] = []
-            for subli in li.find('ul').find_all('li'):
-                time = subli.find('h3').text
-                height = subli.find('span').text
-                self.rows[datetime].append({"time":time, "height":height})
+        try:
+            soup = soup.select("body > section > section.content > main > article > section > div > ul")[0]
+            for li in soup.find_all('li', recursive=False):
+                datetime = li.find('time').get('datetime')
+                self.rows[datetime] = []
+                for subli in li.find('ul').find_all('li'):
+                    time = subli.find('h3').text
+                    height = subli.find('span').text
+                    self.rows[datetime].append({"time":time, "height":height})
+        except Exception as e:
+            with open("log/error_tide.html", "w") as f:
+                f.write(html)
+                raise e
 
     def export(self, db, region):
         for row in self.rows:

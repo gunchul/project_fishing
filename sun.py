@@ -8,18 +8,24 @@ class Sun:
 
     def _data_get(self, html):
         soup = BeautifulSoup(html, 'html.parser')
-        soup = soup.select("body > section > section.content > main > article > section.forecast > div > ul")[0]
-        for li in soup.find_all('li', recursive=False):
-            datetime = li.find('time').get('datetime')
-            first_light = li.find(class_ = "first-light").find('span').text
-            sunrise = li.find(class_ = "sunrise").find('span').text
-            sunset = li.find(class_ = "sunset").find('span').text
-            last_light = li.find(class_ = "last-light").find('span').text
+        try:
+            soup = soup.select("body > section > section.content > main > article > section.forecast > div > ul")[0]
+            for li in soup.find_all('li', recursive=False):
+                datetime = li.find('time').get('datetime')
+                first_light = li.find(class_ = "first-light").find('span').text
+                sunrise = li.find(class_ = "sunrise").find('span').text
+                sunset = li.find(class_ = "sunset").find('span').text
+                last_light = li.find(class_ = "last-light").find('span').text
 
-            self.rows[datetime] = {"first_light":first_light,
-                                   "sunrise":sunrise,
-                                   "sunset":sunset,
-                                   "last_light":last_light}
+                self.rows[datetime] = {"first_light":first_light,
+                                    "sunrise":sunrise,
+                                    "sunset":sunset,
+                                    "last_light":last_light}
+        except Exception as e:
+            with open("log/error_sun.html", "w") as f:
+                f.write(html)
+                raise e
+
     def export(self, db, region):
         for row in self.rows:
             sql = """

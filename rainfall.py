@@ -55,17 +55,22 @@ class Rainfall:
 
     def _data_get(self, html):
         soup = BeautifulSoup(html, 'html.parser')
-        soup = soup.select("body > section > section.content > main > article > section.forecast.selectable > div > ul")[0]
-        for li in soup.find_all('li'):
-            datetime = li.find('time').get('datetime')
-            percent = 0
-            amount = 0
-            for b in li.find_all('b'):
-                if "%" in b.text:
-                    percent = b.text
-                elif "mm" in b.text:
-                    amount = b.text
-            self.rows[datetime] = {"percent":percent, "amount":amount}
+        try:
+            soup = soup.select("body > section > section.content > main > article > section.forecast.selectable > div > ul")[0]
+            for li in soup.find_all('li'):
+                datetime = li.find('time').get('datetime')
+                percent = 0
+                amount = 0
+                for b in li.find_all('b'):
+                    if "%" in b.text:
+                        percent = b.text
+                    elif "mm" in b.text:
+                        amount = b.text
+                self.rows[datetime] = {"percent":percent, "amount":amount}
+        except Exception as e:
+            with open("log/error_rainfall.html", "w") as f:
+                f.write(html)
+                raise e
 
     def export(self, db, region):
         for row in self.rows:
