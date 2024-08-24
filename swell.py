@@ -21,7 +21,7 @@ class Swell:
             value_of_graphs = script.split('ww.data.graphs = ')[1]
             value_of_data = value_of_graphs.split('data:')[1].strip()[:-3]
         except Exception as e:
-            with open("log/error_swell.html", "w") as f:
+            with open("log/error_swell.html", "wb") as f:
                 f.write(html)
                 raise e
 
@@ -74,7 +74,7 @@ INSERT INTO swell(date, region, expected_timestamp, height, direction, period) V
             print(timestamp_to_string(row), self.rows[row]['height'], self.rows[row]['direction'], self.rows[row]['period'])
 
 def test_swell_get():
-    with open("data/swell.html", "r") as f:
+    with open("data/swell.html", "rb") as f:
         content = f.read()
     swell = Swell(content)
     swell.print()

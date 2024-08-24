@@ -49,7 +49,7 @@ INSERT INTO temperature(date, region, expected_timestamp, temperature) VALUES (%
             print(timestamp_to_string(row), self.rows[row]['temperature'])
 
 def test_weather_get():
-    with open("data/weather.html", "r") as f:
+    with open("data/weather.html", "rb") as f:
         content = f.read()
     weather = Temperature(content)
     weather.print()

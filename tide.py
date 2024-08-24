@@ -18,7 +18,7 @@ class Tide:
                     height = subli.find('span').text
                     self.rows[datetime].append({"time":time, "height":height})
         except Exception as e:
-            with open("log/error_tide.html", "w") as f:
+            with open("log/error_tide.html", "wb") as f:
                 f.write(html)
                 raise e
 
@@ -44,7 +44,7 @@ INSERT INTO tide(date, region, expect_date, time, height) VALUES (%s, %s, %s, %s
             print(row, self.rows[row])
 
 def test_tide_get():
-    with open("data/tide.html", "r") as f:
+    with open("data/tide.html", "rb") as f:
         content = f.read()
     tide = Tide(content)
     tide.print()

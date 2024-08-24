@@ -68,7 +68,7 @@ class Rainfall:
                         amount = b.text
                 self.rows[datetime] = {"percent":percent, "amount":amount}
         except Exception as e:
-            with open("log/error_rainfall.html", "w") as f:
+            with open("log/error_rainfall.html", "wb") as f:
                 f.write(html)
                 raise e
 
@@ -91,7 +91,7 @@ INSERT INTO rainfall(date, region, expect_date, possibility, amount) VALUES (%s,
             print(row, self.rows[row]['percent'], self.rows[row]['amount'])
 
 def test_rainfall_get():
-    with open("data/rainfall.html", "r") as f:
+    with open("data/rainfall.html", "rb") as f:
         content = f.read()
     rainfall = RainfallPossibility(content)
     rainfall.print()

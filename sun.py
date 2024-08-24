@@ -22,7 +22,7 @@ class Sun:
                                     "sunset":sunset,
                                     "last_light":last_light}
         except Exception as e:
-            with open("log/error_sun.html", "w") as f:
+            with open("log/error_sun.html", "wb") as f:
                 f.write(html)
                 raise e
 
@@ -47,7 +47,7 @@ INSERT INTO sun(date, region, expect_date, first_light, sunrise, sunset, last_li
             print(row, self.rows[row]['first_light'], self.rows[row]['sunrise'], self.rows[row]['sunset'], self.rows[row]['last_light'])
 
 def test_sun_get():
-    with open("data/sun.html", "r") as f:
+    with open("data/sun.html", "rb") as f:
         content = f.read()
     sun = Sun(content)
     sun.print()

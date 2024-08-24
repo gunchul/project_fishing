@@ -50,7 +50,7 @@ INSERT INTO wind(date, region, expected_timestamp, speed, direction) VALUES (%s,
             print(timestamp_to_string(row), self.rows[row]['wind'], self.rows[row]['direction'])
 
 def test_wind_get():
-    with open("data/wind.html", "r") as f:
+    with open("data/wind.html", "rb") as f:
         content = f.read()
     wind = Wind(content)
     wind.print()

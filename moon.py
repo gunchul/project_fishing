@@ -15,7 +15,7 @@ class Moon:
                 figure = li.find('figure').get("data-fill")
                 self.rows[datetime] = {"figure":figure}
         except Exception as e:
-            with open("log/error_moon.html", "w") as f:
+            with open("log/error_moon.html", "wb") as f:
                 f.write(html)
                 raise e
 
@@ -37,7 +37,7 @@ INSERT INTO moon(date, region, expect_date, amount) VALUES (%s, %s, %s, %s);
             print(row, self.rows[row]['figure'])
 
 def test_moon_get():
-    with open("data/moon.html", "r") as f:
+    with open("data/moon.html", "rb") as f:
         content = f.read()
     moon = Moon(content)
     moon.print()
