@@ -1,3 +1,4 @@
+import sys
 import requests
 from libauth.libauth import Auth
 from libdb.libdb import Db
@@ -34,16 +35,25 @@ def url_get(type, region):
 def html_get(type, region):
     url = url_get(type, region)
     response = requests.get(url)
+    if response.status_code != 200:
+        print(f"Error to get response {response.status_code}", file=sys.stderr)
     return response.content.decode("utf-8")
 
 def export():
+    objects = []
     auth = Auth()
     db = Db(auth.database_host(), auth.database_user(), auth.database_password(), "fishing")
     for region in REGIONS:
         for type in TYPES:
-            html = html_get(TYPES[type]["pre-uri"], REGIONS[region])
-            object = TYPES[type]["creator"](html)
-            object.export(db, region)
+            try:
+                html = html_get(TYPES[type]["pre-uri"], REGIONS[region])
+                object = TYPES[type]["creator"](html)
+                objects.append(object)
+            except Exception:
+                object = TYPES[type]["creator"](html)
+                objects.append(object)
+    for object in objects:
+        object.export(db, region)
 
 def swell_sample_html():
     html = html_get(TYPES['swell']["pre-uri"], REGIONS['sydney'])
