@@ -40,7 +40,6 @@ def html_get(type, region):
     return response.content.decode("utf-8")
 
 def export():
-    objects = []
     auth = Auth()
     db = Db(auth.database_host(), auth.database_user(), auth.database_password(), "fishing")
     for region in REGIONS:
@@ -48,12 +47,11 @@ def export():
             try:
                 html = html_get(TYPES[type]["pre-uri"], REGIONS[region])
                 object = TYPES[type]["creator"](html)
-                objects.append(object)
+                object.export(db, region)
             except Exception:
+                html = html_get(TYPES[type]["pre-uri"], REGIONS[region])
                 object = TYPES[type]["creator"](html)
-                objects.append(object)
-    for object in objects:
-        object.export(db, region)
+                object.export(db, region)
 
 def swell_sample_html():
     html = html_get(TYPES['swell']["pre-uri"], REGIONS['sydney'])
